@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ความทรงจำ</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Kanit', sans-serif;
+      background-color: #fff0f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #fff0f5, #ffe4e1, #fffaf0);
+
+      animation: fadeInPage 0.8s ease;
+    }
+
+    @keyframes fadeInPage {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+}
+
+    h1 {
+  color: #ff1493;
+  margin-bottom: 40px;
+  font-size: 2em;
+  text-align: center;
+  animation: floatText 2s ease-in-out infinite alternate;
+}
+
+@keyframes floatText {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 150px);
+      grid-template-rows: repeat(2, 150px);
+      gap: 30px;
+    }
+
+    .postit {
+      background-color: #ffebcd;
+      border: 3px solid #ff69b4;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 10px;
+      cursor: pointer;
+      box-shadow: 3px 3px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .postit:hover {
+      transform: translateY(-10px) scale(1.1) rotate(2deg);
+      box-shadow: 5px 5px 20px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 500px) {
+      .menu-grid {
+        grid-template-columns: repeat(2, 120px);
+        grid-template-rows: repeat(2, 120px);
+        gap: 20px;
+      }
+      .postit { font-size: 14px; padding: 8px; }
+    }
+
+    .subpage {
+  display: none;
+  position: relative; /* ไม่ต้อง absolute เต็มหน้าจอ */
+  margin: 40px auto;  /* เว้นขอบบน-ล่าง */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  text-align: center;
+  max-width: 400px;  /* กว้างสุด */
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease;
+}
+
+.subpage.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+    .back-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .back-btn:hover { background-color: #ff1493; }
+
+    /* wrapper จัดตรงกลาง แต่สูงตามเนื้อหา */
+.memory-wrapper {
+  display: flex;
+  flex-direction: column; /* การ์ดบน ปุ่มล่าง */
+  align-items: center;    /* จัดกลางแนวนอน */
+  justify-content: flex-start; /* เริ่มจากบน */
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+    .memory-container {
+      position: relative;
+      width: 320px;
+      height: 450px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .memory-card {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+      padding: 10px;
+      transition: all 0.5s ease;
+      box-sizing: border-box;
+    }
+
+    .memory-card img {
+      width: 100%;
+      height: auto;
+      max-height: 70%;
+      background: white;
+      padding: 10px 10px 25px 10px; /* ล่างหนากว่า */
+      border-radius: 10px;
+
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      box-sizing: border-box;
+    }
+
+    .memory-card .card-text {
+  position: absolute;      /* ทำให้ข้อความอยู่บนรูป */
+  top: 10px;               /* เว้นจากขอบบนของรูป 10px */
+  left: 50%;               /* จัดกลางแนวนอน */
+  transform: translateX(-50%); /* ให้ตรงกลางพอดี */
+  margin: 0;               /* ลบ margin เดิม */
+  color: #ff1493;          /* สีข้อความ */
+  font-weight: bold;       /* ตัวหนา */
+  text-align: center;      /* จัดกลาง */
+  background-color: rgba(255, 255, 255, 0.3); /* พื้นหลังโปร่งแสง อ่านง่าย */
+  padding: 5px 10px;       /* เว้นรอบข้อความนิดหน่อย */
+  border-radius: 10px;      /* มุมมน */
+  max-width: 90%;          /* ไม่ให้ยาวเกินการ์ด */
+  box-sizing: border-box;
+  pointer-events: none;    /* ไม่บังการกดปุ่มหรือการ์ด */
+
+  font-weight: bold;
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(5px); /* 🔥 ฟีล glass */
+
+}
+
+    .memory-card p {
+      margin-top: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .memory-buttons {
+      margin-top: 2px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .memory-buttons button {
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      background-color: #ff69b4;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 500px) {
+      .memory-container { width: 200px; height: 300px; }
+      .memory-card p { font-size: 14px; }
+    }
+
+    /*คำถาม*/
+  
+  #quizForm {
+  text-align: left;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+.question {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #fff0f5;
+  border-radius: 10px;
+}
+
+.question p {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ff1493;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+#submitQuiz {
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+#submitQuiz:hover {
+  background-color: #ff1493;
+}
+#questionContainer {
+  text-align: left;
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+.question {
+  padding: 10px;
+  background-color: #fff0f5;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #ff1493;
+}
+
+.option {
+  display: block;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background-color: #ffe4e1;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.option:hover {
+  background-color: #ffb6c1;
+}
+
+#nextQuestion {
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+#nextQuestion:hover {
+  background-color: #ff1493;
+}
+
+.retry-btn {
+  margin-top: 15px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-family: 'Kanit', sans-serif;
+
+  border: none;
+  border-radius: 25px;
+
+  background: linear-gradient(135deg, #ff7eb3, #ff4d6d);
+  color: white;
+
+  box-shadow: 0 6px 15px rgba(255, 77, 109, 0.4);
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+  animation: pulseBtn 1.5s infinite;
+}
+@keyframes pulseBtn {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* hover */
+.retry-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 20px rgba(255, 77, 109, 0.6);
+}
+
+/* ตอนกด */
+.retry-btn:active {
+  transform: scale(0.95);
+}
+
+/*ข้อความ*/
+
+.note-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  max-height: 80vh;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #fffaf0;
+  border-radius: 15px;
+  overflow: visible; /* ❗ ห้าม hidden */
+}
+
+/* 🧍‍♂️ รูป */
+.center-photo {
+  width: 220px;
+  border-radius: 20px;
+  cursor: pointer;
+  animation: float 3s ease-in-out infinite;
+  transition: 0.3s;
+}
+
+.center-photo:hover {
+  transform: scale(1.05);
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* 💌 จดหมาย */
+.letter-open {
+  display: none;
+
+  position: fixed;
+  inset: 0;
+
+  background: transparent; /* ❌ เอาพื้นดำออก */
+
+  z-index: 99999;
+
+  animation: fadeBg 0.3s ease;
+}
+
+@keyframes fadeBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.letter-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%) scale(0.85);
+
+  width: 320px;
+  max-width: 90%;
+
+  max-height: 400px;
+  overflow-y: auto;
+
+  padding: 20px;
+
+  background: #fffaf0;
+  border: 3px solid #ff69b4;
+  border-radius: 18px;
+
+  box-shadow: 0 15px 35px rgba(255,105,180,0.25);
+
+  text-align: center;
+
+  animation: softPop 0.35s ease forwards;
+}
+
+@keyframes softPop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pop {
+  from { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+  to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+@keyframes pop {
+  0% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* ปุ่มจดหมาย */
+.letter-open button {
+  margin-top: 10px;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: #ff69b4;
+  color: white;
+  cursor: pointer;
+}
+
+.letter-open button:hover {
+  background-color: #ff1493;
+}
+
+/*เซอร์ไพร*/
+
+.surprise-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera {
+  font-size: 120px; /* เดิม 80 → ขยาย */
+
+  margin: 20px 0;
+
+  background: #ffe4ec;
+  padding: 20px;
+  border-radius: 50%;
+
+  box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+
+  transition: all 0.3s ease;
+  animation: floatCam 3s ease-in-out infinite;
+  position: relative;
+}
+.camera:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+@keyframes floatCam {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+.camera::before {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(255,182,193,0.4), transparent);
+  border-radius: 50%;
+  z-index: -1;
+}
+/* เด้งตอนกด */
+@keyframes cameraClick {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3) rotate(8deg); }
+  100% { transform: scale(1); }
+}
+
+.camera.click {
+  animation: cameraClick 0.4s ease;
+}
+
+.top-text {
+  font-size: 18px;
+  color: #ff1493;
+  margin-bottom: 10px;
+}
+
+.snap-btn {
+  padding: 12px 26px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #ff7eb3, #ff4d6d);
+  box-shadow: 0 6px 15px rgba(255, 77, 109, 0.4);
+  transition: all 0.3s ease;
+}
+
+.snap-btn:hover {
+  transform: scale(1.08);
+}
+
+.snap-btn:active {
+  transform: scale(0.9);
+}
+
+#flash {
+  position: fixed;
+  inset: 0;
+
+  background: radial-gradient(circle at center,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,0.9) 30%,
+    rgba(255,255,255,0.6) 60%,
+    rgba(255,255,255,0.2) 100%
+  );
+
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+
+  transition: opacity 0.35s ease-out; /* 👈 นุ่มขึ้นตรงนี้ */
+}
+
+#photoBox img,
+#finalImageBox img {
+  width: 250px;
+  border-radius: 15px;
+  animation: finalPop 0.8s ease;
+}
+@keyframes finalPop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+#photoText {
+  margin-top: 10px;
+  color: #ff1493;
+}
+#photo {
+  transition: opacity 0.4s ease;
+}
+
+.fade-text {
+  margin-top: 10px;
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+#finalBox {
+  background: linear-gradient(135deg, #fff0f5, #ffe4e1);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+  text-align: center;
+  animation: boxFloat 2s infinite ease-in-out;
+}
+@keyframes boxFloat {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.surprise-title {
+  font-size: 24px;
+  color: #ff1493;
+  font-weight: bold;
+  animation: pop 0.6s ease;
+}
+
+.sub-text {
+  color: #ff69b4;
+  margin-top: 10px;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.gift-box {
+  font-size: 120px;   /* 🔥 ใหญ่ขึ้นมาก */
+  animation: shake 0.8s infinite ease-in-out;
+  display: inline-block;
+}
+@keyframes shake {
+  0%   { transform: rotate(0deg) scale(1); }
+  25%  { transform: rotate(-8deg) scale(1.05); }
+  50%  { transform: rotate(8deg) scale(1.1); }
+  75%  { transform: rotate(-6deg) scale(1.05); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+/*ปุ่ม*/
+.next-btn {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+
+  padding: 14px 36px;
+  font-size: 16px;
+  font-family: 'Kanit', sans-serif;
+
+  border: none;
+  border-radius: 30px;
+
+  background: linear-gradient(135deg, #ff7eb3, #ff4d6d);
+  color: white;
+
+  box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
+
+  cursor: pointer;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: all 0.4s ease;
+}
+
+/* ตอนโผล่ */
+.next-btn.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+/* hover */
+.next-btn:hover {
+  transform: translateX(-50%) scale(1.08);
+  box-shadow: 0 12px 25px rgba(255, 77, 109, 0.6);
+}
+
+/* ตอนกด */
+.next-btn:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+/*ลูกโปร่ง*/
+.floating-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ฟอง */
+.bubble {
+  position: absolute;
+  bottom: -80px;
+  border-radius: 50%;
+
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,105,180,0.35));
+  opacity: 0.85;
+
+  box-shadow: 
+    inset 0 0 8px rgba(255,255,255,0.6),
+    0 0 12px rgba(255,182,193,0.3);
+
+  animation: floatBubble linear forwards;
+}
+
+/* ลอยขึ้น */
+@keyframes floatBubble {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(-110vh) scale(1);
+    opacity: 0;
+  }
+}
+
+/* กันมันทับเมนู */
+.menu-grid, h1 {
+  position: relative;
+  z-index: 1;
+}
+
+/*รูปอนิเมชั่น*/
+.corner-anim {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  width: 150px; /* 🔥 ปรับตามใจเลย */
+  height: auto;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.corner-anim-left {
+  position: fixed;
+  bottom: 20px;
+  left: 70px; /* 🔥 อยู่ซ้าย */
+  height: 250px;   /* 🔥 คุมความสูงแทน width */
+  width: auto;     /* ให้มันย่ออัตโนมัติ */
+
+  object-fit: contain;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* 💬 กล่องข้อความ */
+.corner-text-left {
+  position: fixed;
+  bottom: 252px; /* อยู่เหนือรูป */
+  left: 70px;
+
+  background: rgba(255,255,255,0.8);
+  color: #ff1493;
+
+  padding: 6px 12px;
+  border-radius: 15px;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  z-index: 9999;
+}
+
+
+
+/* ===== GAME LAYER ===== */
+#gameLayer {
+  position: fixed;
+  inset: 0;
+  background: #111;
+  z-index: 99999;
+  text-align: center;
+  color: white;
+  padding-top: 20px;
+}
+
+/* puzzle */
+#puzzle {
+  width: 320px;
+  height: 320px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+
+.piece {
+  width: 100%;
+  height: 80px;
+  background-image: url('จิ๊กซอร์.png'); /* 👈 เปลี่ยนรูป */
+  background-size: 320px 320px;
+  cursor: pointer;
+}
+
+/* เอฟเฟกต์ */
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.blur {
+  filter: blur(6px);
+  transition: 0.5s;
+}
+
+#gameLayer {
+  background: linear-gradient(135deg, #1a001f, #330033, #660033);
+  background-size: 300% 300%;
+  animation: bgMove 8s ease infinite;
+}
+
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.piece {
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.piece:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(255,105,180,0.6);
+}
+
+/* ===== กล่องเขียนจดหมาย ===== */
+#letterBox {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 🔥 ตรงกลางเป๊ะ */
+
+  width: 300px;
+  max-width: 90%;
+
+  background: #fffaf0;
+  border-radius: 20px;
+  padding: 20px;
+
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+
+  text-align: center;
+  z-index: 100000;
+
+  animation: popUp 0.4s ease forwards;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 🔥 จัดกลางทุกอย่าง */
+}
+
+/* ===== textarea ===== */
+textarea {
+  width: 100%;
+  height: 90px;
+
+  border-radius: 12px;
+  border: none;
+  outline: none;
+
+  padding: 10px;
+  margin-top: 10px;
+
+  resize: none;
+
+  font-family: 'Kanit', sans-serif;
+
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+
+  color: #000;
+  background-color: #fff;
+
+  box-sizing: border-box; /* 🔥 แก้เอียงหลัก */
+  display: block;         /* 🔥 กัน layout เพี้ยน */
+}
+
+/* ===== กล่องข้อความตอบกลับ ===== */
+#reply {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 280px;
+
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+
+  text-align: center;
+
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+
+  z-index: 100000;
+
+  animation: popUp 0.4s ease forwards;
+
+  color: #333;
+}
+
+/* ===== สีข้อความทั้งหมดกันพลาด ===== */
+#letterBox,
+#letterBox h3,
+#letterBox button {
+  margin-top: 15px;
+  padding: 12px 26px;
+
+  border: none;
+  border-radius: 25px;
+
+  font-family: 'Kanit', sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+
+  color: white;
+
+  background: linear-gradient(135deg, #ff7eb3, #ff4d6d);
+
+  box-shadow: 0 6px 15px rgba(255, 77, 109, 0.4);
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+/* hover */
+#letterBox button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 20px rgba(255, 77, 109, 0.6);
+}
+
+/* ตอนกด */
+#letterBox button:active {
+  transform: scale(0.95);
+}
+
+#reply p {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s forwards;
+}
+
+/* ไล่ทีละบรรทัด */
+#reply p:nth-child(2) { animation-delay: 0.4s; }
+#reply p:nth-child(3) { animation-delay: 0.8s; }
+#reply p:nth-child(4) { animation-delay: 1.2s; }
+#reply p:nth-child(5) { animation-delay: 1.6s; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== animation popup (ไม่ใช้ scale แล้ว) ===== */
+@keyframes popUp {
+  0% {
+    transform: translate(-50%, -40%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+  <audio id="magicSound" src="reveal.mp3"></audio>
+
+  <div id="flash"></div>
+  <audio id="bgmusic" src="music.mp3"></audio>
+  <div class="floating-bg"></div>
+
+  <img id="cornerAnim" src="f1.png" class="corner-anim">
+  <img id="cornerAnimLeft" src="l1.png" class="corner-anim-left">
+  <div id="cornerTextLeft" class="corner-text-left"></div>
+
+
+  <div id="gameLayer">
+
+  <h2>ต่อภาพกันหน่อยนะ 😏</h2>
+  <div id="puzzle"></div>
+
+  <div id="letterBox" style="display:none;">
+    <h3>เขียนอะไรถึงเค้าหน่อยสิ 💌</h3>
+    <textarea id="letter"></textarea><br>
+    <button onclick="sendLetter()">ส่ง</button>
+  </div>
+
+  <div id="reply" style="display:none;"></div>
+
+</div>
+
+
+  <h1>เลือกเมนู</h1>
+
+  <div class="menu-grid" id="mainMenu">
+    <div class="postit" onclick="visitPage('memory'); openSubpage('memories')">ความทรงจำ 💖</div>
+
+    <div class="postit" onclick="visitPage('quiz'); openSubpage('quiz')">ตอบคำถาม 🎉</div>
+
+    <div class="postit" onclick="visitPage('surprise'); openSubpage('surprise')">เซอร์ไพรส์ 🎁</div>
+
+    <div class="postit" onclick="visitPage('note'); openSubpage('note')">โน้ตส่วนตัว ✏️</div>
+ 
+    <button id="page4Btn" class="next-btn" onclick="goToPage4()">
+  ไปหน้าถัดไปกัน 🎉
+</button>
+
+
+  </div>
+
+  <!-- ความทรงจำ -->
+  <div class="subpage" id="memories">
+    <h2>ความทรงจำ</h2>
+    <p>จำได้ไหมเธอวันที่เราทำอะไรหลายๆอย่างด้วยกัน? 🌸</p>
+    <div class="memory-wrapper">
+     
+        <div class="memory-container" id="memoryContainer">
+  <div class="memory-card">
+    <img src="ดูหนัง.jpg" alt="Memory 2">
+    <p class="card-text">วันที่ไปดูหนังด้วยกัน </p>
+  </div>
+  <div class="memory-card">
+    <img src="pic3.jpg" alt="Memory 1">
+    <p class="card-text">วาเลนไทน์แรกของพวกเรา 🌸</p>
+  </div>
+  <div class="memory-card">
+    <img src="เดท.jpg" alt="Memory 3">
+    <p class="card-text">เดทแรก</p>
+  </div>
+  <div class="memory-card">
+    <img src="วันเกิด.jpg" alt="Memory 4">
+    <p class="card-text">วันเกิดเเฟนน 🎂</p>
+  </div>
+  <div class="memory-card">
+    <img src="รูปคู่.jpg" alt="Memory 5">
+    <p class="card-text">รูปคู่รูปแรก</p>
+  </div>
+  <div class="memory-card">
+    <img src="นอน.jpg" alt="Memory 6">
+    <p class="card-text">รูปแฟนที่ชอบนอนทั้งวันอิอิ</p>
+  </div>
+  <div class="memory-card">
+    <img src="real3.jpg" alt="Memory 7">
+    <p class="card-text">วันที่เราต่อดอกไม้ด้วยกัน</p>
+  </div>
+</div>
+
+      <div class="memory-buttons" id="memoryButtons" style="display: none;">
+        <button id="nextBtn">ถัดไป</button>
+        <button id="backBtn">กลับเมนู</button>
+      </div>
+    </div>
+  </div>
+
+   <!-- คำถาม -->
+  <div class="subpage" id="quiz">
+  <h2>แฟนรู้ใจเค้าแค่ไหน? 💖</h2>
+
+  <div id="questionContainer">
+    <!-- คำถามจะถูกแสดงทีละข้อด้วย JS -->
+  </div>
+
+  <div style="margin-top:20px;">
+    <button id="nextQuestion">ถัดไป</button>
+  </div>
+
+  <div id="quizResult" style="display:none; margin-top:20px; font-weight:bold; color:#ff1493;"></div>
+
+ <button id="backMenuBtn" class="back-btn" onclick="backToMenu()">กลับเมนู</button>
+</div>
+
+
+<!-- เซอร์ไพรส์ -->
+  <div class="subpage" id="surprise">
+  <div class="surprise-wrapper">
+
+    <!-- กล้อง -->
+    <div id="cameraBox">
+      <p class="top-text">ถ่ายรูปกัน 📸</p>
+      <div class="camera">📷</div>
+      <button class="snap-btn" onclick="startSurprise()">ถ่าย</button>
+    </div>
+    
+    <audio id="snapSound" src="snap.mp3"></audio>
+
+    <!-- รูป -->
+    <div id="photoBox" style="display:none;">
+      <img id="photo" src="funny.jpg">
+      <p id="photoText"></p>
+    </div>
+
+    <!-- ข้อความเซอร์ไพรส์ -->
+    <div id="finalBox" style="display:none; text-align:center;">
+
+       <div class="gift-box">🎁</div>
+
+       <h2 class="surprise-title">มีอะไรอยากให้ดูนะ</h2>
+       <p class="sub-text">กดเลย...ถ้าพร้อมแล้ว 💖</p>
+
+      <button class="snap-btn" onclick="showFinal()">เปิดเซอร์ไพรส์</button>
+
+    </div>
+
+    <!-- รูปสุดท้าย -->
+    <div id="finalImageBox" style="display:none;">
+      <img src="real1.jpg">
+      <p class="fade-text">ไม่บอกหรอก รอลุ้นน้าาเธอว่าคืออะไรคิคิ</p>
+      <button class="back-btn" onclick="backToMenu()">กลับเมนู</button>
+    </div>
+
+  </div>
+</div>
+
+   <!-- ข้อความ -->
+ 
+   <audio id="openSound" src="open.mp3"></audio>
+   <audio id="closeSound" src="close.mp3"></audio>
+
+  <div class="subpage" id="note">
+  <h2>โน้ตส่วนตัว ✏️</h2>
+
+  <div class="note-wrapper">
+
+    <!-- 🧍‍♂️ รูปคุณ (ตัวกดเปิด) -->
+    <img src="yourphoto.jpg" class="center-photo" onclick="openLetter()">
+
+    <!-- 💌 จดหมาย (เหมือนเดิมของคุณ) -->
+    <div class="letter-open" id="letterOpen">
+
+  <div class="letter-box">
+    <p>
+      ถึงดื้ออ 💌 <br>
+      นี้ก็ครบ 3 เดือนแล้วนะเธอ 💖
+      อาจจะเป็นเวลาไม่นาน แต่ทุกวันที่มีเธอมันดีมากๆเลย
+      บ้างครั้งเค้าอาจจะงอแงบ้าง กวนบ้าง น่ารำคาญบ้าง แต่เค้าก็รักดื้อน้าาเค้าอยากให้ดื้อออยู่ด้วยกันไปนานๆ
+      พอมีเธออยู่มันทำให้หลายๆวันมันไม่น่าเบื่อเลยย ถึงอาจจะคุยกันน้อยแต่เค้าก็รักดื้อน่าาแล้วก็รักมากกๆด้วย<br>
+      ขอบคุณน้าเธอที่ยังอยู่ข้างๆ กันเสมอ 💖<br>
+      รักคุณแฟนน้าา 🥰
+    </p>
+
+    <button onclick="closeLetter()">ปิดจดหมาย</button>
+  </div>
+
+</div>
+
+ <button id="noteBackBtn" class="back-btn" onclick="backToMenu()" style="display:none;">
+  กลับเมนู
+</button>
+</div>
+
+  <script>
+
+    // โหลดเพลงหน้า3
+const bgmusic = document.getElementById("bgmusic"); // ให้แน่ใจว่ามี <audio> id="bgmusic" ในหน้า3
+const savedTime = parseFloat(localStorage.getItem("musicTime") || 0);
+bgmusic.currentTime = savedTime;
+bgmusic.play().catch(() => {
+    console.log("เพลงเล่นอัตโนมัติอาจถูกบล็อก ต้องกดปุ่มเล่น");
+});
+
+    function openSubpage(id) {
+  document.getElementById('mainMenu').style.display = 'none';
+  document.querySelector('h1').style.display = 'none';
+
+  const page = document.getElementById(id);
+  page.style.display = 'block';
+
+  setTimeout(() => {
+    page.classList.add("show");
+  }, 10);
+}
+
+    function backToMenu() {
+      const subpages = document.querySelectorAll('.subpage');
+      subpages.forEach(s => s.style.display = 'none');
+      document.getElementById('mainMenu').style.display = 'grid';
+      document.querySelector('h1').style.display = 'block';
+    }
+
+    /* ความทรงจำ */
+const container = document.getElementById('memoryContainer');
+const cards = Array.from(container.children);
+const memoryButtons = document.getElementById('memoryButtons');
+const nextBtn = document.getElementById('nextBtn');
+const backBtn = document.getElementById('backBtn');
+
+// ฟังก์ชันตั้งตำแหน่ง + หมุนเริ่มต้น
+function randomizeCard(card, index) {
+  const rotate = Math.random() * 10 - 5; // หมุนซ้าย-ขวา
+  const offsetY = index * 15; // ลอยทีละนิด
+  card.style.transform = `translateY(${offsetY}px) rotate(${rotate}deg)`;
+  card.style.zIndex = cards.length - index;
+}
+
+// เริ่มต้น: ตั้งตำแหน่งและหมุนเล็ก ๆ
+cards.forEach((card, i) => randomizeCard(card, i));
+
+// ฟังก์ชันลอยสลับทีละใบ + หมุนเล็ก ๆ
+function floatCardsAnimated(rounds = 2, index = 0, currentRound = 0) {
+  if(currentRound >= rounds) {
+    memoryButtons.style.display = 'flex'; // แสดงปุ่มหลังครบรอบ
+    return;
+  }
+
+  const card = cards.shift();
+  cards.push(card);
+  container.appendChild(card);
+
+  cards.forEach((c, i) => {
+    const rotate = Math.random() * 10 - 5;
+    c.style.transition = 'transform 0.5s ease';
+    c.style.transform = `translateY(${i * 15}px) rotate(${rotate}deg)`;
+    c.style.zIndex = cards.length - i;
+  });
+
+  const nextIndex = (index + 1) % cards.length;
+  const nextRound = nextIndex === 0 ? currentRound + 1 : currentRound;
+
+  setTimeout(() => floatCardsAnimated(rounds, nextIndex, nextRound), 500);
+}
+
+// เรียกตอนโหลด
+floatCardsAnimated(2); // 2 รอบ
+
+// สลับการ์ดทีละใบ (เมื่อกดปุ่ม)
+function nextMemory() {
+  const card = cards.shift();
+  cards.push(card);
+  container.appendChild(card);
+
+  cards.forEach((c, i) => {
+    const rotate = Math.random() * 20-10;
+    c.style.transition = 'transform 0.5s ease';
+    c.style.transform = `translateY(${i * 15}px) rotate(${rotate}deg)`;
+    c.style.zIndex = cards.length - i;
+  });
+}
+
+// ปุ่ม
+nextBtn.addEventListener('click', nextMemory);
+backBtn.addEventListener('click', () => {
+  document.getElementById('memories').style.display='none';
+  document.getElementById('mainMenu').style.display='grid';
+  document.querySelector('h1').style.display='block';
+});
+
+ /*คำถาม*/
+
+let retryUsed = false; // 🔥 ใช้เช็คว่าลองใหม่ไปแล้วหรือยัง
+
+// ===== Quiz JS แยกตัวแปร ไม่ซ้ำกับ Memory =====
+const quizData = [
+  {
+    question: "1. สีโปรดของเค้าคือสีอะไรน้าา?",
+    options: [
+      { text: "ชมพู", value: 0 },
+      { text: "ฟ้า", value: 0 },
+      { text: "เขียว", value: 1 }
+    ]
+  },
+  {
+    question: "2. ของกินที่เค้าชอบที่สุดคืออะไร?",
+    options: [
+      { text: "ไอศกรีม 🍦", value: 0 },
+      { text: "ชาบู 🍲", value: 1 },
+      { text: "หมูกระทะ 🥓", value: 0 }
+    ]
+  },
+  {
+    question: "3. วันเกิดของเค้าคือวันไหน?",
+    options: [
+      { text: "23 สิงหาคม 🎂", value: 1 },
+      { text: "23 พฤษภาคม 🎉", value: 0 },
+      { text: "10 กุมภาพันธ์ 🎈", value: 0 }
+    ]
+  },
+  {
+    question: "4. เค้าชอบทำอะไรเวลาว่าง?",
+    options: [
+      { text: "เล่นเกม", value: 0 },
+      { text: "นอนอ่านนิยาย", value: 0 },
+      { text: "เล่นดนตรี", value: 1 }
+    ]
+  }
+  ,
+  {
+    question: "5.  ถ้าเค้ากวนๆใส่เธอหนักเป็นพิเศษ แปลว่า…?",
+    options: [
+      { text: "แค่เล่นไปงั้น 😆", value: 0 },
+      { text: "ไม่มีอะไรทำ 😅", value: 0 },
+      { text: "อยากโดนด่า 😏", value: 1 }
+    ]
+  }
+  ,
+  {
+    question: "6. เค้าชอบทำอะไรเวลาอยู่กับแฟน?",
+    options: [
+      { text: "อยู่เงียบๆ", value: 0 },
+      { text: "ชอบแกล้ง", value: 1 },
+      { text: "ชอบบ่น", value: 0 }
+    ]
+  }
+  ,
+  {
+    question: "7. แฟนว่าเค้าน่ารักไหมอิอิ",
+    options: [
+      { text: "น่ารัก", value: 1 },
+      { text: "น่ารักมากกกก", value: 1 },
+      { text: "น่ารักที่สุด", value: 1 }
+    ]
+  }
+];
+
+let quizCurrentQuestion = 0;
+let quizScore = 0;
+
+const quizContainer = document.getElementById('questionContainer');
+const quizNextBtn = document.getElementById('nextQuestion');
+const quizResult = document.getElementById('quizResult');
+
+function showQuizQuestion(index) {
+  const q = quizData[index];
+  quizContainer.innerHTML = `<p class="question">${q.question}</p>` +
+    q.options.map((opt) =>
+      `<label class="option"><input type="radio" name="answer" value="${opt.value}"> ${opt.text}</label>`
+    ).join('');
+}
+
+// ปุ่มถัดไป
+quizNextBtn.addEventListener('click', () => {
+  const selected = document.querySelector('input[name="answer"]:checked');
+  if (!selected) {
+    alert("เลือกคำตอบก่อนเธออ!");
+    return;
+  }
+
+  quizScore += parseInt(selected.value);
+  quizCurrentQuestion++;
+
+  if (quizCurrentQuestion < quizData.length) {
+  showQuizQuestion(quizCurrentQuestion);
+} else {
+  quizContainer.style.display = "none";
+  quizNextBtn.style.display = "none";
+  quizResult.style.display = "block";
+
+  // 🔥 แสดงปุ่มกลับเมนูตอนจบ
+  backMenuBtn.style.display = "inline-block";
+
+  // 💖 รอบแรก
+  if (!retryUsed) {
+    if (quizScore === quizData.length) {
+      quizResult.innerHTML = `เก่งมากเลยดื้อ ตอบถูกหมดเลย ${quizScore} / ${quizData.length} 🎉`;
+    } else {
+      quizResult.innerHTML = `ยังไม่ครบเลยนะ 😝 ได้ ${quizScore} / ${quizData.length}<br>ลองใหม่อีกครั้งไหม 💕`;
+
+      quizResult.innerHTML += `<br><button id="retryBtn" class="retry-btn">ลองใหม่อีกครั้ง 💕</button>`;
+    }
+  }
+
+  // 💖 รอบที่ 2 (เปลี่ยนข้อความตรงนี้)
+  else {
+    if (quizScore === quizData.length) {
+      quizResult.innerHTML = `รอบนี้เก่งมากเลยน้าา 💖 ตอบถูกหมดเลย 🎉`;
+    } else {
+      quizResult.innerHTML = `พยายามแล้วนะ 💕 ได้ ${quizScore} / ${quizData.length} ก็เก่งแล้วน้าา 😚`;
+    }
+  }
+}
+});
+document.addEventListener("click", function(e) {
+  if (e.target && e.target.id === "retryBtn") {
+
+    retryUsed = true; // 🔥 ใช้สิทธิ์ไปแล้ว
+
+    // รีเซ็ตค่า
+    quizCurrentQuestion = 0;
+    quizScore = 0;
+
+    // แสดงใหม่
+    quizContainer.style.display = "block";
+    quizNextBtn.style.display = "inline-block";
+    quizResult.style.display = "none";
+
+    showQuizQuestion(quizCurrentQuestion);
+  }
+});
+
+// เริ่ม Quiz
+showQuizQuestion(quizCurrentQuestion);
+const backMenuBtn = document.getElementById("backMenuBtn");
+backMenuBtn.style.display = "none"; // 🔥 ซ่อนก่อน
+
+/*ข้อความ*/
+
+function openLetter() {
+  const el = document.getElementById("letterOpen");
+  const openSound = document.getElementById("openSound");
+
+  openSound?.play();
+
+  el.style.display = "block";
+}
+
+function closeLetter() {
+  const el = document.getElementById("letterOpen");
+  const closeSound = document.getElementById("closeSound");
+  const noteBackBtn = document.getElementById("noteBackBtn");
+
+  closeSound?.play();
+
+  el.style.display = "none";
+
+  if (noteBackBtn) {
+    noteBackBtn.style.display = "block";
+  }
+}
+
+
+/*เซอร์ไพร*/
+
+function startSurprise() {
+  const camera = document.querySelector(".camera");
+
+  // 💖 เด้งก่อน
+  camera.classList.add("click");
+
+  const flash = document.getElementById("flash");
+const snapSound = document.getElementById("snapSound");
+
+// 💥 เปิดเสียง
+snapSound.currentTime = 0;
+snapSound.play();
+
+// ⚡ แฟลชแบบนุ่ม
+flash.style.opacity = 1;
+
+// ค้างนิดให้รู้สึกว่าถ่ายจริง
+setTimeout(() => {
+  flash.style.opacity = 0;
+}, 180);
+
+  setTimeout(() => {
+    camera.classList.remove("click");
+
+    // 🔥 ค่อยเปลี่ยนหน้า
+    document.getElementById('cameraBox').style.display = 'none';
+    document.getElementById('photoBox').style.display = 'block';
+
+    const photo = document.getElementById('photo');
+    const text = document.getElementById('photoText');
+
+    photo.src = "funny.jpg";
+
+    setTimeout(() => {
+      text.innerText = "หยอก 😂";
+    }, 2000);
+
+    setTimeout(() => {
+      text.innerText = "รูปจะรอดมั้ยนะ 😂";
+
+      setTimeout(() => {
+        photo.style.opacity = 0;
+
+      setTimeout(() => {
+      photo.src = "real.jpg";
+      photo.style.opacity = 1;
+      }, 300);
+        text.innerText = "อันนี้ของจริง5555 😂";
+      }, 2000);
+
+    }, 5000);
+
+    setTimeout(() => {
+      document.getElementById('photoBox').style.display = 'none';
+      document.getElementById('finalBox').style.display = 'block';
+    }, 10000);
+
+  }, 400);
+}
+
+function showFinal() {
+  document.getElementById('finalBox').style.display = 'none';
+  document.getElementById('finalImageBox').style.display = 'block';
+}
+  
+/*ไปหน้า4*/
+
+let visited = {
+  memory: false,
+  quiz: false,
+  note: false,
+  surprise: false
+};
+
+function visitPage(page) {
+  visited[page] = true;
+
+  if (
+    visited.memory &&
+    visited.quiz &&
+    visited.note &&
+    visited.surprise
+  ) {
+    document.getElementById("page4Btn").classList.add("show");
+  }
+}
+
+/*ลูกโปร่ง*/
+const bg = document.querySelector(".floating-bg");
+
+const colors = [
+  "rgba(255,105,180,0.35)",  // ชมพูเข้ม
+  "rgba(255,182,193,0.35)",  // ชมพูอ่อน
+  "rgba(255,0,0,0.5)",     // แดง
+  "rgba(255,160,200,0.35)",  // อมม่วงนิดๆ
+  "rgba(255,99,132,0.6)",  // ชมพูอมแดง
+];
+
+function createBubble() {
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble");
+
+  // สุ่มตำแหน่ง
+  bubble.style.left = Math.random() * 100 + "vw";
+
+  // ขนาดฟอง
+  const size = 20 + Math.random() * 40;
+  bubble.style.width = size + "px";
+  bubble.style.height = size + "px";
+
+  // ความเร็ว 
+  bubble.style.animationDuration = (8 + Math.random() * 6) + "s";
+
+  // ✅ สุ่มสี
+  const color = colors[Math.floor(Math.random() * colors.length)];
+
+  bubble.style.background = `
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), ${color})
+  `;
+
+  bg.appendChild(bubble);
+
+  setTimeout(() => {
+    bubble.remove();
+  }, 14000);
+}
+
+// ความถี่ฟอง (น้อยๆ สวยๆ)
+setInterval(createBubble, 1200);
+
+
+
+/*รูปอนิเมชั่น*/
+const frames = [
+  "f1.png",
+  "f2.png",
+  "f3.png",
+  "f2.png",
+  "f4.png"
+];
+
+let frameIndex = 0;
+const animImg = document.getElementById("cornerAnim");
+
+setInterval(() => {
+  frameIndex = (frameIndex + 1) % frames.length;
+  animImg.src = frames[frameIndex];
+}, 700); // เปลี่ยนความเร็วได้
+
+// 🎞️ เฟรมฝั่งซ้าย
+const leftFrames = [
+  "l1.png",
+  "l2.png",
+  "l3.png",
+  "l4.png"
+];
+
+let leftIndex = 0;
+const leftAnim = document.getElementById("cornerAnimLeft");
+
+setInterval(() => {
+  leftIndex = (leftIndex + 1) % leftFrames.length;
+  leftAnim.src = leftFrames[leftIndex];
+}, 1200); // 🔥 ช้าลงนิดจะน่ารักกว่า
+
+
+// 💬 ข้อความสุ่ม
+const leftTexts = [
+  "คิดถึงนะ 💖",
+  "ยิ้มหน่อยน้า 😊",
+  "รักมากเลย 💕",
+  "ห้ามงอนนะ 😝",
+  "อยู่ด้วยกันไปนานๆนะ 💗",
+  "ดูซีรีย์เรื่องไรดีน้า",
+  "อ่านนิยายดีกว่า",
+  "งอนละ อย่ามาแตะ",
+  "กูด่าเลยยย"
+];
+
+const leftTextBox = document.getElementById("cornerTextLeft");
+
+function showLeftText() {
+  const text = leftTexts[Math.floor(Math.random() * leftTexts.length)];
+
+  leftTextBox.innerText = text;
+  leftTextBox.style.opacity = 1;
+
+  setTimeout(() => {
+    leftTextBox.style.opacity = 0;
+  }, 2000);
+}
+
+// 🔥 สุ่มพูดทุก 5–9 วิ
+setInterval(() => {
+  showLeftText();
+}, 5000 + Math.random() * 4000);
+
+
+
+/* ===== PUZZLE GAME ===== */
+const puzzle = document.getElementById("puzzle");
+let pieces = [];
+
+// สร้างชิ้น
+for (let i = 0; i < 16; i++) {
+  let div = document.createElement("div");
+  div.className = "piece";
+
+  let x = (i % 4) * -80;
+  let y = Math.floor(i / 4) * -80;
+
+  div.style.backgroundPosition = `${x}px ${y}px`;
+  pieces.push(div);
+}
+
+// สุ่ม
+pieces.sort(() => Math.random() - 0.5);
+pieces.forEach(p => puzzle.appendChild(p));
+
+// สลับ
+let first = null;
+
+pieces.forEach(p => {
+  p.onclick = () => {
+
+    // 🔊 เสียงตอนกด
+    const click = document.getElementById("clickSound");
+    click.currentTime = 0;
+    click.play().catch(()=>{});
+
+    if (!first) {
+      first = p;
+      p.style.border = "2px solid #ff69b4";
+      p.style.transform = "scale(1.1)";
+      p.style.boxShadow = "0 0 15px rgba(255,105,180,0.8)";
+    } else {
+      let temp = first.style.backgroundPosition;
+      first.style.backgroundPosition = p.style.backgroundPosition;
+      p.style.backgroundPosition = temp;
+
+      first.style.border = "none";
+      first.style.transform = "scale(1)";
+      first.style.boxShadow = "none";
+      first = null;
+
+      checkWin();
+    }
+  };
+});
+
+function checkWin() {
+  let correct = true;
+  let all = document.querySelectorAll(".piece");
+
+  all.forEach((p, i) => {
+    let x = (i % 4) * -80;
+    let y = Math.floor(i / 4) * -80;
+
+    if (p.style.backgroundPosition !== `${x}px ${y}px`) {
+      correct = false;
+    }
+  });
+
+  if (correct) {
+    const magic = document.getElementById("magicSound");
+
+    // 🔥 โหลดเสียงก่อน
+    if (magic.readyState < 2) {
+      magic.load();
+    }
+
+    // 🔊 เล่นเสียง
+    magic.currentTime = 0;
+    magic.play().catch(() => {});
+
+    const puzzleEl = document.getElementById("puzzle");
+
+    // ✅ 1. ให้เห็นภาพชัดก่อน
+    setTimeout(() => {
+
+      // ✅ 2. ค่อยเบลอ
+      puzzleEl.classList.add("blur");
+
+      // ✅ 3. แล้วค่อยขึ้นกล่อง
+      setTimeout(() => {
+        const box = document.getElementById("letterBox");
+        box.style.display = "block";
+
+        box.style.opacity = "0";
+        box.style.transform = "translate(-50%, -40%)";
+
+        setTimeout(() => {
+          box.style.transition = "all 0.6s ease";
+          box.style.opacity = "1";
+          box.style.transform = "translate(-50%, -50%)";
+        }, 50);
+
+      }, 1200); // ⏳ เวลาก่อนกล่องขึ้น
+
+    }, 1800); // ⏳ เวลาที่ให้ดูภาพชัดก่อน
+  }
+}
+
+function sendLetter() {
+  const input = document.getElementById("letter").value.trim();
+
+  if (input === "") {
+    alert("เขียนก่อนสิ 😏");
+    return;
+  }
+
+  // 🔥 ซ่อนกล่องเขียน
+  document.getElementById("letterBox").style.display = "none";
+
+  const reply = document.getElementById("reply");
+  reply.style.display = "block";
+  reply.innerHTML = "";
+
+  // ===== 💭 กำลังอ่าน (มีจุดวิ่ง) =====
+  let dots = 0;
+
+  const loadingText = document.createElement("p");
+  loadingText.style.fontSize = "18px";
+  loadingText.style.color = "#555";
+  loadingText.style.fontWeight = "bold";
+  loadingText.style.textAlign = "center";
+
+  reply.appendChild(loadingText);
+
+  const interval = setInterval(() => {
+    dots = (dots + 1) % 4;
+    loadingText.innerText = "กำลังอ่านอยู่" + ".".repeat(dots) + " 👀💌";
+  }, 400);
+
+  // ⏳ เวลาตามความยาวข้อความ (เนียนขึ้น)
+  const readTime = Math.min(4500, 1200 + input.length * 40);
+
+  setTimeout(() => {
+    clearInterval(interval);
+
+    // ===== 💬 กำลังพิมพ์ =====
+    reply.innerHTML = `
+      <p style="font-size:18px; color:#888;">
+        กำลังพิมพ์ตอบนะ... ✍️
+      </p>
+    `;
+
+    // ⏳ หน่วงก่อนพิมพ์จริง
+    setTimeout(() => {
+
+      reply.innerHTML = "";
+
+      let lines = [
+        "เค้าอ่านแล้วนะ 💌",
+        "ขอบคุณที่เขียนให้น้าาาดื้อ 💖",
+        "ทำเอาเค้าเขินเลย รักดื้อน้า 😳",
+        "แต่มันยังไม่หมดแค่นี้นะดื้อ... 😏",
+        "เค้ามีอะไรให้เธอดูอีกเยอะเลยยย 🎁"
+      ];
+
+      typeLines(reply, lines);
+
+    }, 1200); // เวลาพิมพ์ก่อนเริ่ม
+
+  }, readTime);
+}
+
+
+// ===== ✍️ พิมพ์ทีละบรรทัด =====
+function typeLines(container, lines, index = 0) {
+  if (index >= lines.length) return;
+
+  const p = document.createElement("p");
+  p.style.opacity = "0";
+  p.style.transform = "translateY(10px)";
+  p.style.transition = "all 0.5s ease";
+
+  container.appendChild(p);
+
+  let text = lines[index];
+  let i = 0;
+
+  function typeChar() {
+    if (i < text.length) {
+      p.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeChar, 40); // 🔥 ความเร็วพิมพ์ (30–60 กำลังดี)
+    } else {
+      // ✨ fade ขึ้น
+      p.style.opacity = "1";
+      p.style.transform = "translateY(0)";
+
+      // ➡️ ไปบรรทัดถัดไป
+      setTimeout(() => {
+        typeLines(container, lines, index + 1);
+      }, 1000);
+    }
+  }
+
+  typeChar();
+}
+
+function typeLines(element, lines, speed = 40) {
+  let i = 0;
+
+  function showLine() {
+    if (i < lines.length) {
+      const p = document.createElement("p");
+      element.appendChild(p);
+
+      typeText(p, lines[i], speed);
+
+      i++;
+      setTimeout(showLine, 800); // 🔥 เว้นจังหวะทีละบรรทัด
+    } else {
+      // 🔥 ปุ่มขึ้นตอนท้าย
+      const btn = document.createElement("button");
+      btn.innerText = "ไปต่อ 💖";
+      btn.onclick = closeGame;
+
+      btn.style.marginTop = "15px";
+      btn.style.padding = "10px 20px";
+      btn.style.border = "none";
+      btn.style.borderRadius = "20px";
+      btn.style.background = "#ff69b4";
+      btn.style.color = "white";
+      btn.style.cursor = "pointer";
+
+      element.appendChild(btn);
+    }
+  }
+
+  showLine();
+}
+
+function typeText(el, text, speed = 30) {
+  let i = 0;
+
+  function typing() {
+    if (i < text.length) {
+      el.innerHTML += text[i];
+      i++;
+      setTimeout(typing, speed);
+    }
+  }
+
+  typing();
+}
+
+function closeGame() {
+  let game = document.getElementById("gameLayer");
+
+  game.classList.add("fade-out");
+
+  setTimeout(() => {
+    game.style.display = "none";
+  }, 800);
+}
+
+
+function goToPage4(){
+  window.location.href = "page4.html";
+}
+
+  </script>
+</body>
+</html>

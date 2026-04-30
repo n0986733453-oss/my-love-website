@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+    font-family: sans-serif;
+}
+
+/* วิดีโอ */
+video {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: black;
+}
+
+/* intro */
+#intro {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 40px;
+    z-index: 20;
+}
+
+/* countdown */
+#countdown {
+    font-size: 100px;
+    display: none;
+}
+
+/* ผ้าม่าน */
+.curtain {
+    position: fixed;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, #300, #900);
+    z-index: 10;
+    transition: transform 1.5s ease;
+}
+
+#leftCurtain { left: 0; }
+#rightCurtain { right: 0; }
+
+.open-left { transform: translateX(-100%); }
+.open-right { transform: translateX(100%); }
+
+/* แสงตอนเปิด */
+#light {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
+    opacity: 0;
+    transition: opacity 1s;
+    z-index: 5;
+}
+
+/* ข้อความ */
+#messageBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    display: none;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    z-index: 30;
+}
+
+#homeBtn {
+    margin-top: 20px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    display: none;
+}
+
+#fadeScreen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 1;
+    z-index: 50;
+    transition: opacity 2s ease;
+    pointer-events: none; /* 👈 ใส่ตรงนี้ */
+}
+
+#countdown {
+    font-size: 100px;
+    animation: zoom 0.5s ease;
+}
+
+@keyframes zoom {
+    0% { transform: scale(1.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+#messageBox p {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="fadeScreen"></div>
+
+<div id="intro">
+    <div id="readyText">เค้ามีอะไรอยากให้ดู...</div>
+    <div id="text" style="display:none;">พร้อมยังเธออ?</div>
+    <div id="text1" style="display:none;">พร้อมละนะ?</div>
+    <div id="text2" style="display:none;">เค้าจะเริ่มละ?</div>
+    <div id="countdown"></div>
+</div>
+
+<div id="light"></div>
+
+<div id="leftCurtain" class="curtain"></div>
+<div id="rightCurtain" class="curtain"></div>
+
+<video id="v">
+    <source src="your-video.mp4" type="video/mp4">
+</video>
+
+<div id="messageBox">
+    <h1>ถึงคลิปจะจบแล้ว แต่เรื่องราวของพวกเรามันยังไม่จบนะ ❤️</h1>
+    <p>ขอบคุณที่อยู่ด้วยกันมาตลอด</p>
+    <p>รักเธอออ</p>
+    <button id="homeBtn" onclick="goHome()">กลับหน้าแรก</button>
+</div>
+
+<script>
+let v = document.getElementById("v");
+
+let readyText = document.getElementById("readyText");
+let text = document.getElementById("text");
+let text1 = document.getElementById("text1");
+let text2 = document.getElementById("text2");
+let countdownEl = document.getElementById("countdown");
+
+// ลำดับข้อความ
+setTimeout(() => {
+    readyText.style.display = "none";
+    text.style.display = "block";
+}, 2000);
+
+setTimeout(() => {
+    text.style.display = "none";
+    text1.style.display = "block";
+}, 4000);
+
+setTimeout(() => {
+    text1.style.display = "none";
+    text2.style.display = "block";
+}, 6000);
+
+// 👉 สำคัญ: เริ่มนับ
+setTimeout(() => {
+    text2.style.display = "none";
+    countdownEl.style.display = "block";
+    startCountdown();
+}, 9000);
+
+
+// ===== นับถอยหลัง =====
+function startCountdown(){
+    let count = 3;
+
+    // 👉 ใส่ animation ตอนเลขแรก
+    countdownEl.textContent = count;
+    countdownEl.style.animation = "none";
+    countdownEl.offsetHeight;
+    countdownEl.style.animation = "zoom 0.5s ease";
+
+    let c = setInterval(() => {
+        count--;
+
+        // 👉 ใส่ตรงนี้แหละ!
+        countdownEl.textContent = count;
+        countdownEl.style.animation = "none";
+        countdownEl.offsetHeight;
+        countdownEl.style.animation = "zoom 0.5s ease";
+
+        if(count <= 0){
+            clearInterval(c);
+            setTimeout(openCurtain, 500);
+        }
+    }, 2000);
+}
+
+
+// ===== เปิดม่าน =====
+function openCurtain(){
+    document.getElementById("intro").style.display = "none";
+
+    document.getElementById("leftCurtain").classList.add("open-left");
+    document.getElementById("rightCurtain").classList.add("open-right");
+
+    document.getElementById("light").style.opacity = "1";
+
+    setTimeout(() => {
+        v.style.display = "block";
+        v.play().catch(()=>{});
+        startVideoEvents();
+    }, 1500);
+}
+
+function showLines(){
+    let lines = document.querySelectorAll("#messageBox p");
+    let i = 0;
+
+    function showNext(){
+        if(i < lines.length){
+            lines[i].style.opacity = "1";
+            i++;
+            setTimeout(showNext, 1500); // เว้นระยะต่อบรรทัด
+        }
+    }
+
+    showNext();
+}
+
+
+// ===== หลังวิดีโอ =====
+function startVideoEvents(){
+
+    setTimeout(() => {
+        let msg = document.getElementById("messageBox");
+        msg.style.display = "block";
+
+        setTimeout(() => {
+            msg.style.opacity = "1";
+            showLines(); // 👈 ใส่ตรงนี้
+        }, 50);
+    }, 180000);
+
+    setTimeout(() => {
+        document.getElementById("homeBtn").style.display = "inline-block";
+    }, 185000);
+}
+
+setTimeout(() => {
+    document.getElementById("fadeScreen").style.opacity = "0";
+}, 500);
+
+
+// ===== จบ =====
+v.onended = function(){
+    window.location.href = "index.html";
+}
+
+function goHome(){
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

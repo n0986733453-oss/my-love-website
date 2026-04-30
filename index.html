@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial;
+    overflow: hidden;
+    transition: 0.5s;
+    overflow-x: hidden;
+}
+
+/* กล่องหลัก */
+.main {
+    text-align: center;
+    position: absolute;
+    top: 55%;   /* 🔥 จาก 50% → 42% (ขยับขึ้น) */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+/* ❤️ หัวใจใหญ่ */
+.heart {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(45deg, #ff3366, #ff0033);
+    position: relative;
+    transform: rotate(-45deg);
+    margin: auto;
+    animation: beat 1s infinite;
+    box-shadow: 0 10px 30px rgba(255, 0, 80, 0.4),
+     0 0 20px rgba(255, 0, 80, 0.6),
+     0 0 40px rgba(255, 0, 80, 0.4),
+     0 0 60px rgba(255, 0, 80, 0.2);
+
+     filter: brightness(0.3);
+     transition: 0.2s;
+}
+
+/*ข้อความหัวใจ*/
+.hint-text {
+    margin-top: 15px;
+    font-size: 16px;
+    color: white;
+    opacity: 0.8;
+    animation: fadeIn 2s ease;
+    transition: 0.5s;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(45deg, #ff3366, #ff0033);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart::before {
+    top: -75px;
+    left: 0;
+}
+
+.heart::after {
+    left: 75px;
+    top: 0;
+}
+
+/* 💓 animation เต้น */
+@keyframes beat {
+    0% { transform: rotate(-45deg) scale(1); }
+    50% { transform: rotate(-45deg) scale(1.1); }
+    100% { transform: rotate(-45deg) scale(1); }
+}
+
+/* ข้อความ */
+.text {
+    margin-top: 30px;
+    font-size: 26px;
+    color: white;
+    animation: fadeIn 2s ease;
+
+    opacity: 1;
+    transition: 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ปุ่ม */
+button {
+    margin-top: 15px;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 25px;
+    background: white;
+    color: #ff3366;
+    font-size: 16px;
+    cursor: pointer;
+
+    opacity: 0;
+    transition: 1s;
+}
+
+/* รูปคุณ */
+.left-img, .right-img {
+    position: absolute;
+    width: 200px;
+    border-radius: 20px;
+    z-index: 2;
+}
+
+/* ซ้าย */
+.left-wrap {
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+    width: 200px;
+    z-index: 2;
+}
+
+/* รูปอยู่บน */
+.left-img {
+    width: 100%;
+    border-radius: 20px;
+    display: block;
+    position: relative;
+    z-index: 2;   /* 🔥 สูงกว่า */
+}
+
+/* เงาอยู่ล่าง */
+.left-wrap::after {
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 15px;
+    background: rgba(0,0,0,0.35);
+    border-radius: 50%;
+    filter: blur(10px);
+    z-index: 1;   /* 🔥 ต่ำกว่า */
+}
+
+/* ขวา */
+.right-img {
+    right: 30px;
+    bottom: 10px;    /* 🔥 ขวาชิดล่าง */
+}
+
+
+.heart-box {
+    transform: translateY(-40px);
+}
+
+/*ลูกโปร่ง*/
+
+.balloons {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 999; /* 🔥 จาก 0 → 5 */
+    pointer-events: none; /* กันบังปุ่ม */
+}
+
+.balloon {
+    position: absolute;
+    bottom: -100px;
+    width: 30px;
+    height: 40px;
+    background: rgb(249, 198, 207);
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-120vh); }
+}
+
+/*พื้นหลังวิ่งๆ*/
+
+.sparkle {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.sparkle span {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%,100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+}
+
+
+@media (max-width: 600px) {
+
+    .left-img, .right-img {
+        width: 110px; /* 🔥 ลดขนาด */
+        bottom: 10px;
+    }
+
+    .left-img {
+        left: 10px;
+    }
+
+    .right-img {
+        right: 10px;
+    }
+
+    .heart {
+        width: 110px;
+        height: 110px;
+    }
+
+    .heart::before,
+    .heart::after {
+        width: 110px;
+        height: 110px;
+    }
+
+    .heart::before {
+        top: -55px;
+    }
+
+    .heart::after {
+        left: 55px;
+    }
+
+    .text {
+        font-size: 20px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+ <audio id="popSound" src="pop.mp3"></audio>
+ <audio id="finishSound" src="finish.mp3"></audio>
+ <div class="balloons" id="balloons"></div>
+
+<div class="left-wrap">
+    <img src="me.png" class="left-img">
+</div>
+<img src="her.png" class="right-img">
+
+<div class="main">
+    <div class="heart-box">
+        <div class="heart" onclick="fillHeart()"></div>
+    </div>
+
+    <!-- ✅ ใช้ตัวเดียว -->
+    <div class="text" id="loveText">กดเติมใจให้หน่อยนะ 💖</div>
+
+
+    <button id="nextBtn" onclick="goNext()">มีอะไรจะให้ดูด้วยแหละ กดเลย</button>
+</div>
+
+<script>
+
+const container = document.getElementById("balloons");
+
+// 👉 เพิ่มตรงนี้
+const colors = [
+  "linear-gradient(#ff4d6d, #ff8fa3)",
+  "linear-gradient(#ff85a1, #ffc2d1)",
+  "linear-gradient(#ff758f, #ffb3c6)"
+];
+
+for (let i = 0; i < 18; i++) {
+    const b = document.createElement("div");
+    b.className = "balloon";
+
+    // 🔥 ใส่ตรงนี้ (สำคัญ)
+    b.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+    // กระจายแนวนอน
+    b.style.left = Math.random() * 100 + "vw";
+
+    // กระจายเริ่มต้น
+    b.style.bottom = Math.random() * -100 + "px";
+
+    // ขนาด
+    let size = 20 + Math.random() * 30;
+    b.style.width = size + "px";
+    b.style.height = size * 1.2 + "px";
+
+    // ความเร็ว
+    b.style.animationDuration = (5 + Math.random() * 8) + "s";
+
+    // ไม่ลอยพร้อมกัน
+    b.style.animationDelay = Math.random() * 10 + "s";
+
+    container.appendChild(b);
+}
+
+/*พื้นหลังวิ่งๆ*/
+
+const sparkle = document.createElement("div");
+sparkle.className = "sparkle";
+document.body.appendChild(sparkle);
+
+for (let i = 0; i < 40; i++) {
+    const s = document.createElement("span");
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.top = Math.random() * 100 + "vh";
+    s.style.animationDelay = Math.random() * 3 + "s";
+    sparkle.appendChild(s);
+    
+}
+
+/*หัวใจดำ*/
+let count = 0;
+const max = 15; // 🔥 จำนวนครั้งที่ต้องกด
+
+function fillHeart() {
+
+    if (count >= max) return;
+
+    count++;
+
+    const sound = document.getElementById("popSound");
+    sound.currentTime = 0;  // 🔥 รีเซ็ตกลับต้นเสียง
+    sound.play();
+
+    const heart = document.querySelector(".heart");
+
+    // เพิ่มความสว่างทีละนิด
+    let brightness = 0.3 + (count / max) * 0.7;
+    heart.style.filter = `brightness(${brightness})`;
+
+    // เอฟเฟกต์เด้ง
+    heart.style.transform = "rotate(-45deg) scale(1.2)";
+    setTimeout(() => {
+        heart.style.transform = "rotate(-45deg) scale(1)";
+    }, 150);
+
+    // ถ้ากดครบ
+    if (count === max) {
+
+    // 🔥 เล่นเสียงตอนเต็ม
+    const finish = document.getElementById("finishSound");
+    finish.currentTime = 0;
+    finish.volume = 0.5;
+    finish.play();
+
+    showLove();
+}
+}
+
+function showLove() {
+    const text = document.getElementById("loveText");
+
+    // fade ออกข้อความเดิม
+    text.style.opacity = 0;
+
+    setTimeout(() => {
+        text.innerHTML = "";
+        text.style.opacity = 1;
+
+        typeWriter("I Love You ", text, 120); // 🔥 ความเร็วพิมพ์
+    }, 1500); // 🔥 หน่วงก่อนเริ่มพิมพ์
+
+    // ปุ่มโผล่ทีหลัง
+    setTimeout(() => {
+        document.getElementById("nextBtn").style.opacity = 1;
+    }, 7000);
+}
+
+function typeWriter(str, el, speed) {
+    let i = 0;
+
+    function typing() {
+        if (i < str.length) {
+            el.innerHTML += str.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+
+    typing();
+}
+
+function goNext() {
+    document.body.style.opacity = 0;
+    setTimeout(() => {
+        window.location.href = "page1.html";
+    }, 500);
+}
+</script>
+
+</body>
+</html>
